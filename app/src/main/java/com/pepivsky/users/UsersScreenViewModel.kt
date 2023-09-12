@@ -15,13 +15,14 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 import javax.inject.Inject
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 
 @HiltViewModel
 class UsersScreenViewModel @Inject constructor(private val getUsersUseCase: GetUsersUseCase): ViewModel(){
 
     val users = mutableStateListOf<UserResponseItem>()
-    var homeUiState: HomeUiState by mutableStateOf(HomeUiState.Loading)
+    var homeUiState: HomeUiState by  mutableStateOf(HomeUiState.Loading)
     init {
         Log.d("pp", "init call")
         getUsers()
@@ -38,7 +39,7 @@ class UsersScreenViewModel @Inject constructor(private val getUsersUseCase: GetU
                 users.addAll(result)
                 HomeUiState.Success
             } catch (e: IOException) {
-                Log.d("pp", "error")
+                Log.d("pp", "errorcito ${e.message}")
                 HomeUiState.Error
             }
         }
