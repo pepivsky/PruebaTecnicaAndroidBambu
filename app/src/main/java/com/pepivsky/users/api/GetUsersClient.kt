@@ -1,6 +1,6 @@
-package com.pepivsky.users
+package com.pepivsky.users.api
 
-import com.pepivsky.users.model.UserResponseItem
+import com.pepivsky.users.model.response.UserResponseItem
 import retrofit2.http.GET
 
 interface GetUsersClient {

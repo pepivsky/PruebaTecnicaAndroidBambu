@@ -1,4 +1,4 @@
-package com.pepivsky.users.model
+package com.pepivsky.users.model.response
 
 data class Address(
     val city: String,

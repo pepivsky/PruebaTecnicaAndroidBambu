@@ -1,6 +1,7 @@
-package com.pepivsky.users
+package com.pepivsky.users.domain.service
 
-import com.pepivsky.users.model.UserResponseItem
+import com.pepivsky.users.api.GetUsersClient
+import com.pepivsky.users.model.response.UserResponseItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit

@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.pepivsky.users.UsersScreenViewModel
+import com.pepivsky.users.presentation.UsersScreenViewModel
 import com.pepivsky.users.screens.UserDetailScreen
 import com.pepivsky.users.screens.UsersScreen
 

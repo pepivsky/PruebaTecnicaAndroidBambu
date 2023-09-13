@@ -1,4 +1,4 @@
-package com.pepivsky.users
+package com.pepivsky.users.network
 
 import com.google.gson.GsonBuilder
 //import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory

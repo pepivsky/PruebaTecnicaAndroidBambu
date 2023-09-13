@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,12 +27,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.pepivsky.users.HomeUiState
+import com.pepivsky.users.presentation.HomeUiState
 import com.pepivsky.users.R
-import com.pepivsky.users.UsersScreenViewModel
-import com.pepivsky.users.model.UserResponseItem
+import com.pepivsky.users.presentation.UsersScreenViewModel
+import com.pepivsky.users.model.response.UserResponseItem
 import com.pepivsky.users.ui.theme.UsersTheme
-import androidx.compose.ui.text.style.TextAlign
 import com.pepivsky.users.util.InternetConnectivityManger
 import com.pepivsky.users.navigation.AppScreens
 
