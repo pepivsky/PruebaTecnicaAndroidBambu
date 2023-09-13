@@ -15,10 +15,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,8 +33,8 @@ import com.pepivsky.users.R
 import com.pepivsky.users.UsersScreenViewModel
 import com.pepivsky.users.model.UserResponseItem
 import com.pepivsky.users.ui.theme.UsersTheme
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
+import androidx.compose.ui.text.style.TextAlign
+import com.pepivsky.users.util.InternetConnectivityManger
 import com.pepivsky.users.navigation.AppScreens
 
 
@@ -65,7 +64,20 @@ fun UsersScreen(
             }
 
             is HomeUiState.Error -> {
-                Text(modifier = Modifier.align(Alignment.Center), text = "Error")
+                /*Text(
+                    text = "error",
+                    color = MaterialTheme.colorScheme.error,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .align(Alignment.Center)
+                )*/
+                ErrorScreen()
+                InternetConnectivityManger {
+                    viewModel.getUsers()
+                }
+
             }
         }
     }
