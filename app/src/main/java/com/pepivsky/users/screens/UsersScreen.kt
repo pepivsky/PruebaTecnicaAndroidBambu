@@ -1,5 +1,6 @@
 package com.pepivsky.users.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -15,7 +16,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +40,7 @@ import com.pepivsky.users.util.InternetConnectivityManger
 import com.pepivsky.users.navigation.AppScreens
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UsersScreen(
     modifier: Modifier = Modifier,
@@ -45,40 +50,48 @@ fun UsersScreen(
 
     val uiState = viewModel.homeUiState
     val users = viewModel.users
-    Box(modifier = Modifier.fillMaxSize()) {
-        when (uiState) {
-            is HomeUiState.Loading -> {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
 
-            is HomeUiState.Success -> {
-                LazyColumn(content = {
-                    items(users, key = { it.id }) { user ->
-                        UserItem(
-                            user = user,
-                            onClick = { navController.navigate(route = AppScreens.DetailScreen.createRoute(user.id)) })
-                    }
-                })
-            }
+    Scaffold(topBar = {
+        TopAppBar(title = {
+            Text(text = "Users", fontWeight = FontWeight.Bold)
+        })
+    }, content = { paddingValues ->
 
-            is HomeUiState.Error -> {
-                /*Text(
-                    text = "error",
-                    color = MaterialTheme.colorScheme.error,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                        .align(Alignment.Center)
-                )*/
-                ErrorScreen()
-                InternetConnectivityManger {
-                    viewModel.getUsers()
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues = paddingValues)) {
+            when (uiState) {
+                is HomeUiState.Loading -> {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
 
+                is HomeUiState.Success -> {
+                    LazyColumn(content = {
+                        items(users, key = { it.id }) { user ->
+                            UserItem(
+                                user = user,
+                                onClick = {
+                                    navController.navigate(
+                                        route = AppScreens.DetailScreen.createRoute(
+                                            user.id
+                                        )
+                                    )
+                                })
+                        }
+                    })
+                }
+
+                is HomeUiState.Error -> {
+                    ErrorScreen()
+                    InternetConnectivityManger {
+                        viewModel.getUsers()
+                    }
+
+                }
             }
         }
-    }
+
+    })
 }
 
 //@Preview(showBackground = true)
