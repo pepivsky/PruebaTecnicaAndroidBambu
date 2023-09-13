@@ -20,13 +20,16 @@ fun AppNavigation(viewModel: UsersScreenViewModel) {
                 navController = navController
             )
         }
-        composable(route = AppScreens.DetailScreen.route + "/{id}", arguments = listOf(navArgument(name = "id") {
-            type = NavType.IntType
-        })) {
+        composable(
+            route = AppScreens.DetailScreen.route,
+            arguments = listOf(navArgument(name = AppScreens.DetailScreen.param) {
+                type = NavType.IntType
+            })
+        ) {
             UserDetailScreen(
                 viewModel = viewModel,
                 navController = navController,
-                id = it.arguments?.getInt("id") ?: 0
+                id = it.arguments?.getInt(AppScreens.DetailScreen.param) ?: 0
             )
         }
     }

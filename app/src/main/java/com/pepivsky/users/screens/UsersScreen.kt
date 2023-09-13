@@ -56,7 +56,7 @@ fun UsersScreen(
                     items(users, key = { it.id }) { user ->
                         UserItem(
                             user = user,
-                            onClick = { navController.navigate(route = AppScreens.DetailScreen.route + "/" + user.id) })
+                            onClick = { navController.navigate(route = AppScreens.DetailScreen.createRoute(user.id)) })
                     }
                 })
             }
