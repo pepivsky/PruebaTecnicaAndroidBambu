@@ -1,21 +1,33 @@
 package com.pepivsky.users.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.pepivsky.users.R
 import com.pepivsky.users.presentation.UsersScreenViewModel
 import com.pepivsky.users.model.response.Address
 import com.pepivsky.users.model.response.Company
 import com.pepivsky.users.model.response.Geo
 import com.pepivsky.users.model.response.UserResponseItem
+
 
 
 @Composable
@@ -24,109 +36,75 @@ fun UserDetailScreen(
     id: Int,
     navController: NavController
 ) {
-    val contact = viewModel.users.find { it.id == id }!!
-    LazyColumn(
+    val userResponseItem = viewModel.users.find { it.id == id }!!
+    Column(modifier = Modifier.fillMaxSize()) {
+        Image(
+            painter = painterResource(id = R.drawable.elon),
+            contentDescription = "Profile Image",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .padding(16.dp)
+                .height(100.dp)
+                .width(100.dp)
+                .clip(CircleShape)
+                .align(Alignment.CenterHorizontally)
+
+
+        )
+        LazyColumn(content = {
+            val userProperties = userToList(userResponseItem)
+
+            items(userProperties) {
+                FieldItem(it)
+            }
+        })
+
+    }
+
+}
+
+fun userToList(userResponseItem: UserResponseItem): List<String> {
+    return listOf(
+        userResponseItem.name,
+        userResponseItem.username,
+        userResponseItem.email,
+        userResponseItem.phone,
+        userResponseItem.website,
+    )
+}
+
+@Composable
+fun FieldItem(field: String = "Correo") {
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(8.dp)
     ) {
-        item {
-            Text(text = "ID: ${contact.id}", style = TextStyle(fontSize = 18.sp))
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Name: ${contact.name}", style = TextStyle(fontSize = 18.sp))
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Username: ${contact.username}", style = TextStyle(fontSize = 18.sp))
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Email: ${contact.email}", style = TextStyle(fontSize = 18.sp))
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        item {
-            Text(
-                text = "Address",
-                style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Street: ${contact.address.street}", style = TextStyle(fontSize = 18.sp))
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Suite: ${contact.address.suite}", style = TextStyle(fontSize = 18.sp))
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "City: ${contact.address.city}", style = TextStyle(fontSize = 18.sp))
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Zipcode: ${contact.address.zipcode}", style = TextStyle(fontSize = 18.sp))
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Lat: ${contact.address.geo.lat}", style = TextStyle(fontSize = 18.sp))
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Lng: ${contact.address.geo.lng}", style = TextStyle(fontSize = 18.sp))
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        item {
-            Text(
-                text = "Phone: ${contact.phone}",
-                style = TextStyle(fontSize = 18.sp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "Website: ${contact.website}",
-                style = TextStyle(fontSize = 18.sp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        item {
-            Text(
-                text = "Company",
-                style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "Name: ${contact.company.name}",
-                style = TextStyle(fontSize = 18.sp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "Catch Phrase: ${contact.company.catchPhrase}",
-                fontSize = 18.sp
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "BS: ${contact.company.bs}",
-                style = TextStyle(fontSize = 18.sp)
-            )
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp), shape = RoundedCornerShape(100.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    //.background(Color.Transparent)
+                    .fillMaxSize(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                //Spacer(modifier = Modifier.pa)
+                Icon(
+                    modifier = Modifier.padding(start = 20.dp),
+                    imageVector = Icons.Default.Face,
+                    contentDescription = "face icon"
+                )
+                Text(
+                    modifier = Modifier.padding(start = 16.dp),
+                    text = field,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+            }
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewUserDetailScreen() {
-    //UserDetailScreen(contact = createDummyUser())
-}
-
-fun createDummyUser(): UserResponseItem {
-    val dummyAddress = Address(
-        city = "DummyCity",
-        geo = Geo(lat = "0.0", lng = "0.0"),
-        street = "DummyStreet",
-        suite = "DummySuite",
-        zipcode = "00000"
-    )
-
-    val dummyCompany = Company(
-        bs = "DummyBS",
-        catchPhrase = "DummyCatchPhrase",
-        name = "DummyCompanyName"
-    )
-
-    return UserResponseItem(
-        address = dummyAddress,
-        company = dummyCompany,
-        email = "dummy@email.com",
-        id = 1,
-        name = "DummyName",
-        phone = "123-456-7890",
-        username = "DummyUsername",
-        website = "dummywebsite.com"
-    )
-}
