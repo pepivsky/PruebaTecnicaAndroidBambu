@@ -36,29 +36,32 @@ fun UserDetailScreen(
     navController: NavController
 ) {
     val userResponseItem = viewModel.users.find { it.id == id }!!
-    Column(modifier = Modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(id = R.drawable.elon),
-            contentDescription = "Profile Image",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .padding(16.dp)
-                .height(100.dp)
-                .width(100.dp)
-                .clip(CircleShape)
-                .align(Alignment.CenterHorizontally)
 
 
-        )
-        LazyColumn(content = {
-            val userProperties = userToList(userResponseItem)
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        val userProperties = userToList(userResponseItem)
 
-            items(userProperties) {
-                FieldItem(it)
+        item {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Image(
+                    painter = painterResource(id = R.drawable.elon),
+                    contentDescription = "Profile Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .height(100.dp)
+                        .width(100.dp)
+                        .clip(CircleShape)
+                        .align(Alignment.CenterHorizontally)
+                )
             }
-        })
+        }
 
+        items(userProperties) {
+            FieldItem(it)
+        }
     }
+
 
 }
 
