@@ -1,12 +1,14 @@
 package com.pepivsky.users.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -29,6 +31,7 @@ import com.pepivsky.users.model.response.Geo
 import com.pepivsky.users.model.response.UserResponseItem
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserDetailScreen(
     viewModel: UsersScreenViewModel,
@@ -37,51 +40,48 @@ fun UserDetailScreen(
 ) {
     val userResponseItem = viewModel.users.find { it.id == id }!!
 
+    Scaffold(topBar = {
+        TopAppBar(title = {
+            Text(text = userResponseItem.name, fontWeight = FontWeight.Bold)
+        }, navigationIcon = {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = "back",
+                modifier = Modifier.clickable { navController.popBackStack() })
+        })
+    }, content = {
 
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        val userProperties = userToList(userResponseItem)
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+        ) {
+            val userProperties = userToList(userResponseItem)
+            item {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Image(
+                        painter = painterResource(id = R.drawable.elon),
+                        contentDescription = "Profile Image",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .height(100.dp)
+                            .width(100.dp)
+                            .clip(CircleShape)
+                            .align(Alignment.CenterHorizontally)
+                    )
+                }
+            }
 
-        item {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Image(
-                    painter = painterResource(id = R.drawable.elon),
-                    contentDescription = "Profile Image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .height(100.dp)
-                        .width(100.dp)
-                        .clip(CircleShape)
-                        .align(Alignment.CenterHorizontally)
-                )
+            items(userProperties) {
+                FieldItem(it)
             }
         }
-
-        items(userProperties) {
-            FieldItem(it)
-        }
-    }
+    })
 
 
 }
 
-fun userToList(userResponseItem: UserResponseItem): List<String> {
-    return listOf(
-        userResponseItem.name,
-        userResponseItem.username,
-        userResponseItem.email,
-        userResponseItem.phone,
-        userResponseItem.website,
-        userResponseItem.company.name,
-        userResponseItem.company.bs,
-        userResponseItem.company.catchPhrase,
-        userResponseItem.address.suite,
-        userResponseItem.address.zipcode,
-        userResponseItem.address.city,
-        userResponseItem.address.street,
-        userResponseItem.address.zipcode,
-    )
-}
 
 @Composable
 fun FieldItem(field: String = "Correo") {
@@ -116,5 +116,23 @@ fun FieldItem(field: String = "Correo") {
             }
         }
     }
+}
+
+fun userToList(userResponseItem: UserResponseItem): List<String> {
+    return listOf(
+        userResponseItem.name,
+        userResponseItem.username,
+        userResponseItem.email,
+        userResponseItem.phone,
+        userResponseItem.website,
+        userResponseItem.company.name,
+        userResponseItem.company.bs,
+        userResponseItem.company.catchPhrase,
+        userResponseItem.address.suite,
+        userResponseItem.address.zipcode,
+        userResponseItem.address.city,
+        userResponseItem.address.street,
+        userResponseItem.address.zipcode,
+    )
 }
 
