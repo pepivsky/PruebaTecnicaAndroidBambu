@@ -29,7 +29,6 @@ import com.pepivsky.users.model.response.Geo
 import com.pepivsky.users.model.response.UserResponseItem
 
 
-
 @Composable
 fun UserDetailScreen(
     viewModel: UsersScreenViewModel,
@@ -70,6 +69,14 @@ fun userToList(userResponseItem: UserResponseItem): List<String> {
         userResponseItem.email,
         userResponseItem.phone,
         userResponseItem.website,
+        userResponseItem.company.name,
+        userResponseItem.company.bs,
+        userResponseItem.company.catchPhrase,
+        userResponseItem.address.suite,
+        userResponseItem.address.zipcode,
+        userResponseItem.address.city,
+        userResponseItem.address.street,
+        userResponseItem.address.zipcode,
     )
 }
 
